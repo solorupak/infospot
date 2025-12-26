@@ -276,3 +276,6 @@ infospot/media/
 .env
 .envs/*
 !.envs/.local/
+
+/design_template
+.kiro/
