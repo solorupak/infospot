@@ -9,7 +9,7 @@ _thread_locals = threading.local()
 
 def get_current_tenant():
     """Get the current tenant from thread-local storage"""
-    return getattr(_thread_locals, 'tenant', None)
+    return getattr(_thread_locals, 'tenant', 1)
 
 
 def set_current_tenant(tenant):

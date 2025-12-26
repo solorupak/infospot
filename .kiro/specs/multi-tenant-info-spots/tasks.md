@@ -6,7 +6,7 @@ This implementation plan breaks down the development of the multi-tenant QR/NFC-
 
 ## Tasks
 
-- [x] 1. Set up project foundation and multi-tenancy infrastructure
+- [ ] 1. Set up project foundation and multi-tenancy infrastructure
   - Configure Django project with required dependencies (django-qr-code, Stripe, Redis, Hypothesis)
   - Create core models: Tenant, TenantAdmin, EndUser
   - Implement TenantMiddleware for subdomain-based tenant resolution

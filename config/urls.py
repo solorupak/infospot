@@ -24,6 +24,8 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Tenants app
     path("", include("apps.tenants.urls", namespace="tenants")),
+    # Dashboard app
+    path("dashboard/", include("apps.dashboard.urls", namespace="dashboard")),
     # Your stuff: custom urls includes go here
     # ...
     # Media files

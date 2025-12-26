@@ -3,6 +3,7 @@ import string
 from qr_code.qrcode.utils import QRCodeOptions
 # from qr_code.qrcode.maker import make_qr_code_image
 from django.conf import settings
+from .middleware import get_current_tenant, set_current_tenant, clear_current_tenant
 
 
 def generate_qr_code_data(info_spot):

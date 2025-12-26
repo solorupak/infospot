@@ -46,7 +46,22 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {"default": env.db("DATABASE_URL")}
+if env.bool("USE_DOCKER", default=False):
+    # When using Docker, construct DATABASE_URL from PostgreSQL env vars
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": env("POSTGRES_DB", default="infospot"),
+            "USER": env("POSTGRES_USER", default="debug"),
+            "PASSWORD": env("POSTGRES_PASSWORD", default="debug"),
+            "HOST": env("POSTGRES_HOST", default="postgres"),
+            "PORT": env("POSTGRES_PORT", default="5432"),
+        }
+    }
+else:
+    # For local development, use DATABASE_URL
+    DATABASES = {"default": env.db("DATABASE_URL")}
+
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -105,6 +120,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "infospot.users",
     "apps.tenants",
+    "apps.dashboard",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
