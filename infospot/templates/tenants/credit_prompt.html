@@ -1,0 +1,60 @@
+{% extends "tenants/base.html" %}
+
+{% block title %}Unlock Content - {{ spot.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-6 mx-auto">
+        <div class="card">
+            <div class="card-body text-center">
+                <h2 class="card-title">🔒 Premium Content</h2>
+                <h3>{{ spot.name }}</h3>
+                
+                {% if spot.description %}
+                    <p class="text-muted">{{ spot.description }}</p>
+                {% endif %}
+                
+                <div class="alert alert-info">
+                    <h4>{{ required_credits }} Credit{{ required_credits|pluralize }} Required</h4>
+                    <p class="mb-0">You have {{ user_credits }} credit{{ user_credits|pluralize }} available</p>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary btn-lg"
+                            hx-post="{% url 'tenants:spend_credits' spot.uuid %}"
+                            hx-swap="none"
+                            hx-indicator="#spending-indicator">
+                        <span class="spending-text">Unlock with {{ required_credits }} Credit{{ required_credits|pluralize }}</span>
+                        <span id="spending-indicator" class="htmx-indicator">
+                            <span class="spinner-border spinner-border-sm" role="status"></span>
+                            Processing...
+                        </span>
+                    </button>
+                    
+                    <a href="#" class="btn btn-outline-secondary">Buy More Credits</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.body.addEventListener('htmx:responseError', function(evt) {
+    if (evt.detail.xhr.status === 402) {
+        const response = JSON.parse(evt.detail.xhr.responseText);
+        alert('Insufficient credits. You have ' + response.balance + ' credits but need ' + response.required + '.');
+    } else {
+        alert('An error occurred. Please try again.');
+    }
+});
+
+document.body.addEventListener('htmx:afterRequest', function(evt) {
+    if (evt.detail.xhr.status === 200) {
+        const response = JSON.parse(evt.detail.xhr.responseText);
+        if (response.success) {
+            window.location.href = response.redirect_url;
+        }
+    }
+});
+</script>
+{% endblock %}

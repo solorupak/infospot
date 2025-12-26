@@ -1,0 +1,29 @@
+{% if content %}
+    <div class="content-section">
+        <h2>{{ content.title }}</h2>
+        
+        {% if content.audio_file %}
+            <div class="audio-player mb-4">
+                <audio controls class="w-100" preload="metadata">
+                    <source src="{{ content.audio_file.url }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                {% if content.audio_duration %}
+                    <small class="text-muted">Duration: {{ content.audio_duration }} seconds</small>
+                {% endif %}
+            </div>
+        {% endif %}
+        
+        {% if content.text_content %}
+            <div class="text-content">
+                {{ content.text_content|linebreaks }}
+            </div>
+        {% endif %}
+        
+        <small class="text-muted">
+            Language: {{ content.language|upper }} | 
+            Version: {{ content.version }} | 
+            Updated: {{ content.updated_at|date:"M d, Y" }}
+        </small>
+    </div>
+{% endif %}

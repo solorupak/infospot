@@ -1,0 +1,60 @@
+{% extends "tenants/base.html" %}
+{% load static %}
+
+{% block title %}{{ spot.name }} - {{ tenant_name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">{{ spot.name }}</h1>
+                
+                {% if spot.description %}
+                    <p class="text-muted">{{ spot.description }}</p>
+                {% endif %}
+                
+                {% if spot.location_description %}
+                    <p><strong>Location:</strong> {{ spot.location_description }}</p>
+                {% endif %}
+                
+                {% if content %}
+                    <div id="content-area">
+                        {% include "tenants/_spot_content.html" %}
+                    </div>
+                    
+                    {% if available_languages|length > 1 %}
+                        <div class="mt-4">
+                            <label for="language-select" class="form-label">Language:</label>
+                            <select id="language-select" 
+                                    class="form-select"
+                                    hx-get="{% url 'tenants:spot_access' spot.uuid %}"
+                                    hx-target="#content-area"
+                                    hx-swap="innerHTML"
+                                    hx-indicator="#loading"
+                                    name="language">
+                                {% for lang in available_languages %}
+                                    <option value="{{ lang }}" {% if lang == content.language %}selected{% endif %}>
+                                        {{ lang|upper }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="alert alert-warning">
+                        <h4>Content Not Available</h4>
+                        <p>Sorry, no content is available for this info spot at the moment.</p>
+                    </div>
+                {% endif %}
+                
+                <div id="loading" class="htmx-indicator text-center mt-3">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

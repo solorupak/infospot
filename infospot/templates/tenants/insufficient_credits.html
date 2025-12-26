@@ -1,0 +1,64 @@
+{% extends "tenants/base.html" %}
+
+{% block title %}Insufficient Credits - {{ spot.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-6 mx-auto">
+        <div class="card">
+            <div class="card-body text-center">
+                <h2 class="card-title text-warning">⚠️ Insufficient Credits</h2>
+                <h3>{{ spot.name }}</h3>
+                
+                {% if spot.description %}
+                    <p class="text-muted">{{ spot.description }}</p>
+                {% endif %}
+                
+                <div class="alert alert-warning">
+                    <h4>{{ required_credits }} Credit{{ required_credits|pluralize }} Required</h4>
+                    <p>You have {{ user_credits }} credit{{ user_credits|pluralize }} available</p>
+                    <p class="mb-0">You need {{ required_credits|add:user_credits|add:"-"|add:user_credits }} more credit{{ required_credits|add:user_credits|add:"-"|add:user_credits|pluralize }}</p>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <a href="#" class="btn btn-primary btn-lg">Buy Credits</a>
+                    <a href="/" class="btn btn-outline-secondary">Browse Free Content</a>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Credit Packages</h5>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6>10 Credits</h6>
+                                    <p class="text-primary">$5.00</p>
+                                    <small>$0.50 per credit</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6>20 Credits</h6>
+                                    <p class="text-primary">$9.00</p>
+                                    <small>$0.45 per credit</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6>50 Credits</h6>
+                                    <p class="text-primary">$20.00</p>
+                                    <small>$0.40 per credit</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
