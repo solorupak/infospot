@@ -1,10 +1,9 @@
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
-from .models import InfoSpot, EndUser, UserCredit, Content
+from .models import EndUser, UserCredit
 from .utils import generate_qr_code_data, generate_nfc_tag_id
-
-User = get_user_model()
+from apps.info_spots.models import InfoSpot, Content
 
 
 @receiver(post_save, sender=InfoSpot)
@@ -26,14 +25,14 @@ def generate_info_spot_identifiers(sender, instance, created, **kwargs):
         )
 
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender='users.User')
 def create_end_user_profile(sender, instance, created, **kwargs):
     """Create EndUser profile when User is created"""
     if created:
         EndUser.objects.get_or_create(user=instance)
 
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender='users.User')
 def create_user_credit_account(sender, instance, created, **kwargs):
     """Create UserCredit account when User is created"""
     if created:

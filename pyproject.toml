@@ -180,6 +180,8 @@ dependencies = [
     "django-qr-code==4.1.0",
     "django-ratelimit==4.1.0",
     "django-redis==6.0.0",
+    "django-tenants==3.7.0",
+    "django-tenant-users==2.2.1",
     "djangorestframework==3.16.1",
     "drf-spectacular==0.29.0",
     "flower==2.0.1",

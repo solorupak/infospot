@@ -3,11 +3,10 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from apps.tenants.models import Tenant, TenantAdmin
 
-User = get_user_model()
-
 
 class DashboardBaseViewTest(TestCase):
     def setUp(self):
+        User = get_user_model()
         self.client = Client()
         self.user = User.objects.create_user(
             username='testuser',
@@ -45,6 +44,7 @@ class DashboardBaseViewTest(TestCase):
         
     def test_dashboard_allows_superuser(self):
         """Test that superusers can access dashboard"""
+        User = get_user_model()
         superuser = User.objects.create_superuser(
             username='admin',
             email='admin@example.com',

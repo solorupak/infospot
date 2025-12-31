@@ -50,7 +50,7 @@ if env.bool("USE_DOCKER", default=False):
     # When using Docker, construct DATABASE_URL from PostgreSQL env vars
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.postgresql",
+            "ENGINE": "django_tenants.postgresql_backend",
             "NAME": env("POSTGRES_DB", default="infospot"),
             "USER": env("POSTGRES_USER", default="debug"),
             "PASSWORD": env("POSTGRES_PASSWORD", default="debug"),
@@ -59,8 +59,73 @@ if env.bool("USE_DOCKER", default=False):
         }
     }
 else:
-    # For local development, use DATABASE_URL
+    # For local development, use DATABASE_URL but ensure django-tenants backend
     DATABASES = {"default": env.db("DATABASE_URL")}
+    # Override engine to use django-tenants backend
+    DATABASES["default"]["ENGINE"] = "django_tenants.postgresql_backend"
+
+# Database routers
+DATABASE_ROUTERS = (
+    'django_tenants.routers.TenantSyncRouter',
+)
+
+# Django-tenants configuration
+# ------------------------------------------------------------------------------
+TENANT_MODEL = "tenants.Tenant"  # app.Model
+TENANT_DOMAIN_MODEL = "tenants.Domain"  # app.Model
+
+# Public schema apps (shared across all tenants)
+SHARED_APPS = [
+    "django_tenants",  # mandatory
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.sites",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.admin",
+    "django.forms",
+    
+    # Third party shared apps
+    "crispy_forms",
+    "crispy_bootstrap5",
+    "allauth",
+    "allauth.account",
+    "allauth.mfa",
+    "allauth.socialaccount",
+    "django_celery_beat",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "corsheaders",
+    "drf_spectacular",
+    "qr_code",
+    # "django_tenant_users.tenants",  # For tenant-user management - TODO: Add after package installation
+    # "django_tenant_users.users",    # For user management - TODO: Add after package installation
+    
+    # Local shared apps (public schema)
+    "apps.users.apps.UsersConfig",
+    "apps.tenants",  # Move tenants to shared apps for tenant management
+]
+
+# Tenant-specific apps (isolated per tenant)
+TENANT_APPS = [
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.sites",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.admin",
+    "django.forms",
+    
+    # Local tenant apps (tenant schema)
+    "apps.info_spots",  # Tenant-specific models like InfoSpot, Content, etc.
+    "apps.dashboard",
+    "apps.utils",
+]
+
+# For compatibility with existing Django apps
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
@@ -88,43 +153,6 @@ CACHES = {
 ROOT_URLCONF = "config.urls"
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = "config.wsgi.application"
-
-# APPS
-# ------------------------------------------------------------------------------
-DJANGO_APPS = [
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.sites",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    # "django.contrib.humanize", # Handy template tags
-    "django.contrib.admin",
-    "django.forms",
-]
-THIRD_PARTY_APPS = [
-    "crispy_forms",
-    "crispy_bootstrap5",
-    "allauth",
-    "allauth.account",
-    "allauth.mfa",
-    "allauth.socialaccount",
-    "django_celery_beat",
-    "rest_framework",
-    "rest_framework.authtoken",
-    "corsheaders",
-    "drf_spectacular",
-    "qr_code",
-]
-
-LOCAL_APPS = [
-    "infospot.users",
-    "apps.tenants",
-    "apps.dashboard",
-    # Your stuff: custom apps go here
-]
-# https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------
@@ -169,11 +197,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
+    "django_tenants.middleware.main.TenantMainMiddleware",  # Must be first for schema switching
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "apps.tenants.middleware.TenantMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -226,7 +254,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                "infospot.users.context_processors.allauth_settings",
+                "apps.users.context_processors.allauth_settings",
                 "apps.tenants.context_processors.tenant_context",
             ],
         },
@@ -367,13 +395,13 @@ ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_ADAPTER = "infospot.users.adapters.AccountAdapter"
+ACCOUNT_ADAPTER = "apps.users.adapters.AccountAdapter"
 # https://docs.allauth.org/en/latest/account/forms.html
-ACCOUNT_FORMS = {"signup": "infospot.users.forms.UserSignupForm"}
+ACCOUNT_FORMS = {"signup": "apps.users.forms.UserSignupForm"}
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
-SOCIALACCOUNT_ADAPTER = "infospot.users.adapters.SocialAccountAdapter"
+SOCIALACCOUNT_ADAPTER = "apps.users.adapters.SocialAccountAdapter"
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
-SOCIALACCOUNT_FORMS = {"signup": "infospot.users.forms.UserSocialSignupForm"}
+SOCIALACCOUNT_FORMS = {"signup": "apps.users.forms.UserSocialSignupForm"}
 
 # django-rest-framework
 # -------------------------------------------------------------------------------

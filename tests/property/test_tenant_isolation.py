@@ -8,8 +8,6 @@ from django.db import IntegrityError
 from apps.tenants.models import Tenant, InfoSpot, TenantAdmin
 from django.contrib.auth import get_user_model
 
-User = get_user_model()
-
 
 class TenantIsolationPropertyTests(TestCase):
     """Property-based tests for tenant isolation"""
@@ -181,6 +179,7 @@ class TenantIsolationPropertyTests(TestCase):
         )
         
         # Create users and tenant admins
+        User = get_user_model()
         user1 = User.objects.create_user(
             username=f"admin1_{tenant_data.subdomain}",
             email=f"admin1@{tenant_data.subdomain}.com"

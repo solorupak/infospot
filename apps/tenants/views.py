@@ -6,7 +6,8 @@ from django.http import JsonResponse, HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
-from .models import InfoSpot, Content, CreditTransaction, UserCredit
+from .models import UserCredit
+from apps.info_spots.models import InfoSpot, Content, CreditTransaction
 from .utils import generate_qr_code_image, is_tenant_admin
 
 

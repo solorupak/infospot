@@ -4,6 +4,14 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+# Create migrations if they don't exist
+echo "=== Creating migrations"
+python manage.py makemigrations tenants
+python manage.py makemigrations users
 
-python manage.py migrate
+# Bootstrap django-tenants system
+echo "=== Bootstrapping django-tenants system"
+python manage.py bootstrap_tenants --create-public-tenant
+
+echo "=== Starting Django server"
 exec uvicorn config.asgi:application --host 0.0.0.0 --reload --reload-include '*.html'
