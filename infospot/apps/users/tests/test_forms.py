@@ -2,8 +2,8 @@
 
 from django.utils.translation import gettext_lazy as _
 
-from infospot.users.forms import UserAdminCreationForm
-from infospot.users.models import User
+from infospot.apps.users.forms import UserAdminCreationForm
+from infospot.apps.users.models import User
 
 
 class TestUserAdminCreationForm:

@@ -1,8 +1,8 @@
 import pytest
 from rest_framework.test import APIRequestFactory
 
-from infospot.users.api.views import UserViewSet
-from infospot.users.models import User
+from infospot.apps.users.api.views import UserViewSet
+from infospot.apps.users.models import User
 
 
 class TestUserViewSet:

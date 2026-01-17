@@ -1,7 +1,7 @@
 from django.urls import resolve
 from django.urls import reverse
 
-from infospot.users.models import User
+from infospot.apps.users.models import User
 
 
 def test_detail(user: User):
