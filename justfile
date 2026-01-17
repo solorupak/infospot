@@ -36,3 +36,42 @@ logs *args:
 # manage: Executes `manage.py` command.
 manage +args:
     @docker compose run --rm django python ./manage.py {{args}}
+
+# uv: Add a new package
+add +packages:
+    @echo "Adding packages: {{packages}}"
+    @docker compose run --rm django uv add {{packages}}
+
+# uv: Add development dependency
+add-dev +packages:
+    @echo "Adding dev packages: {{packages}}"
+    @docker compose run --rm django uv add --dev {{packages}}
+
+# uv: Remove a package
+remove +packages:
+    @echo "Removing packages: {{packages}}"
+    @docker compose run --rm django uv remove {{packages}}
+
+# uv: Sync dependencies
+sync:
+    @echo "Syncing dependencies..."
+    @docker compose run --rm django uv sync
+
+# uv: Update all packages
+update:
+    @echo "Updating all packages..."
+    @docker compose run --rm django uv lock --upgrade
+
+# uv: Update specific packages
+update-package +packages:
+    @echo "Updating packages: {{packages}}"
+    @docker compose run --rm django uv lock --upgrade-package {{packages}}
+
+# uv: Show installed packages
+show:
+    @docker compose run --rm django uv pip list
+
+# uv: Show outdated packages
+outdated:
+    @docker compose run --rm django uv pip list --outdated
+
