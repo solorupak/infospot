@@ -3,6 +3,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UtilsConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'infospot.apps.utils'
-    label = 'utils'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "infospot.apps.utils"
+    label = _("Utils")

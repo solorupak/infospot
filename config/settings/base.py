@@ -53,14 +53,18 @@ LOCAL_APPS = [
 ]
 
 SHARED_APPS = [
-    'django_tenants', 'infospot.apps.tenant_manager'
-] + DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+    "django_tenants",
+    "infospot.apps.tenant_manager",
+    *DJANGO_APPS,
+    *THIRD_PARTY_APPS,
+    *LOCAL_APPS,
+]
+
 TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = SHARED_APPS + [
-    app for app in TENANT_APPS if app not in SHARED_APPS
-]
+INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
 
 # Local time zone. Choices are
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -96,13 +100,11 @@ DATABASES = {
         "PASSWORD": env("POSTGRES_PASSWORD"),
         "HOST": env("POSTGRES_HOST"),
         "PORT": env("POSTGRES_PORT"),
-    }
+    },
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
-DATABASE_ROUTERS = (
-    'django_tenants.routers.TenantSyncRouter',
-)
+DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
 
 # Tenants settings
 TENANT_MODEL = "tenant_manager.Tenant"

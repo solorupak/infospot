@@ -127,7 +127,8 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-force-single-line = true
+force-single-line = false
+combine-as-imports = true
 
 [dependency-groups]
 dev = [
