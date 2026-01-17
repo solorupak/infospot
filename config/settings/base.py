@@ -50,10 +50,11 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "infospot.apps.users",
-    "infospot.apps.tenant_manager"
 ]
 
-SHARED_APPS = ['django_tenants'] + DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+SHARED_APPS = [
+    'django_tenants', 'infospot.apps.tenant_manager'
+] + DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -115,6 +116,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
 ROOT_URLCONF = "config.urls"
+PUBLIC_SCHEMA_URLCONF = "config.urls_public"
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = "config.wsgi.application"
 

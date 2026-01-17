@@ -2,7 +2,7 @@ from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
 
-class UsersConfig(AppConfig):
+class TenantManagerConfig(AppConfig):
     name = "infospot.apps.tenant_manager"
     label="tenant_manager"
     verbose_name = _("TenantManager")
