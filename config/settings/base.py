@@ -53,8 +53,8 @@ LOCAL_APPS = [
 ]
 
 SHARED_APPS = [
-    'django_tenants',
-    'infospot.apps.tenant_manager',
+    "django_tenants",
+    "infospot.apps.tenant_manager",
     *DJANGO_APPS,
     *THIRD_PARTY_APPS,
     *LOCAL_APPS,
@@ -104,9 +104,7 @@ DATABASES = {
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
-DATABASE_ROUTERS = (
-    "django_tenants.routers.TenantSyncRouter",
-)
+DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
 
 # Tenants settings
 TENANT_MODEL = "tenant_manager.Tenant"

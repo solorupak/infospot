@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 class TenantManagerConfig(AppConfig):
     name = "infospot.apps.tenant_manager"
-    label="tenant_manager"
+    label = "tenant_manager"
     verbose_name = _("TenantManager")
 
     def ready(self):
