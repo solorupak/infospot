@@ -4,7 +4,7 @@ import django.utils.timezone
 from django.db import migrations
 from django.db import models
 
-import infospot.users.models
+import infospot.apps.users.models
 
 
 class Migration(migrations.Migration):

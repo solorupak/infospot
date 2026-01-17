@@ -12,12 +12,12 @@ from django.test import RequestFactory
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from infospot.users.forms import UserAdminChangeForm
-from infospot.users.models import User
-from infospot.users.tests.factories import UserFactory
-from infospot.users.views import UserRedirectView
-from infospot.users.views import UserUpdateView
-from infospot.users.views import user_detail_view
+from infospot.apps.users.forms import UserAdminChangeForm
+from infospot.apps.users.models import User
+from infospot.apps.users.tests.factories import UserFactory
+from infospot.apps.users.views import UserRedirectView
+from infospot.apps.users.views import UserUpdateView
+from infospot.apps.users.views import user_detail_view
 
 pytestmark = pytest.mark.django_db
 

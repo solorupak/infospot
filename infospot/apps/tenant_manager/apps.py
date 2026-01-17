@@ -3,8 +3,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UsersConfig(AppConfig):
-    name = "infospot.users"
-    verbose_name = _("Users")
+    name = "infospot.apps.tenant_manager"
+    label="tenant_manager"
+    verbose_name = _("TenantManager")
 
     def ready(self):
         """

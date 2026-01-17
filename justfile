@@ -24,6 +24,15 @@ down:
     @echo "Stopping containers..."
     @docker compose down
 
+# restart: Stop and Up containers
+restart:
+    @just down
+    @just up
+
+# Open bash
+bash:
+    @docker compose exec django bash
+
 # prune: Remove containers and their volumes.
 prune *args:
     @echo "Killing containers and removing volumes..."

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from infospot.users.models import User
+from infospot.apps.users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer[User]):
