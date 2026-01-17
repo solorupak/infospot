@@ -52,15 +52,13 @@ LOCAL_APPS = [
     "infospot.apps.users",
 ]
 
-SHARED_APPS = (
-    [
-        "django_tenants",
-        "infospot.apps.tenant_manager",
-    ]
-    + DJANGO_APPS
-    + THIRD_PARTY_APPS
-    + LOCAL_APPS
-)
+SHARED_APPS = [
+    'django_tenants',
+    'infospot.apps.tenant_manager',
+    *DJANGO_APPS,
+    *THIRD_PARTY_APPS,
+    *LOCAL_APPS,
+]
 
 TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -102,12 +100,12 @@ DATABASES = {
         "PASSWORD": env("POSTGRES_PASSWORD"),
         "HOST": env("POSTGRES_HOST"),
         "PORT": env("POSTGRES_PORT"),
-    }
+    },
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 DATABASE_ROUTERS = (
-    'django_tenants.routers.TenantSyncRouter',
+    "django_tenants.routers.TenantSyncRouter",
 )
 
 # Tenants settings
