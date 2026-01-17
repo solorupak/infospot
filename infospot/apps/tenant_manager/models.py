@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django_tenants.models import TenantMixin, DomainMixin
+from django_tenants.models import DomainMixin, TenantMixin
 
 from infospot.apps.utils.models import BaseModel
 
