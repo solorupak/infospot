@@ -12,7 +12,6 @@ class SiteSetting(BaseModel):
     motto = models.CharField(
         verbose_name=_("Motto"),
         max_length=250,
-        null=True,
         blank=True,
     )
     logo = models.FileField(verbose_name=_("Logo"), upload_to="logo/")
