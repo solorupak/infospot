@@ -54,13 +54,19 @@ LOCAL_APPS = [
 
 SHARED_APPS = [
     "django_tenants",
-    "infospot.apps.tenant_manager",
     *DJANGO_APPS,
     *THIRD_PARTY_APPS,
     *LOCAL_APPS,
+    "colorfield",
+    "infospot.apps.tenant_manager",
 ]
 
-TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+TENANT_APPS = [
+    *DJANGO_APPS,
+    *THIRD_PARTY_APPS,
+    *LOCAL_APPS,
+    "infospot.apps.tenants",
+]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
