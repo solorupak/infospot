@@ -28,8 +28,8 @@ STORAGES = {
         "BACKEND": "config.storage.local.CustomLocalSchemaStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
-    }
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }
 
 # EMAIL
