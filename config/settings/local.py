@@ -23,6 +23,15 @@ CACHES = {
     },
 }
 
+STORAGES = {
+    "default": {
+        "BACKEND": "config.storage.local.CustomLocalSchemaStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
+    }
+}
+
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-host
